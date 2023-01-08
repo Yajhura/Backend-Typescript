@@ -1,0 +1,16 @@
+version: "3.1"
+
+services:
+  db_unit:
+    image: mysql:5.7
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3312:3306"
+    environment:
+      MYSQL_DATABASE: db_unit
+      MYSQL_ROOT_USER: userpvp
+      MYSQL_USER: userpvp
+      MYSQL_ROOT_PASSWORD: yajhura12
+      MYSQL_PASSWORD: yajhura12

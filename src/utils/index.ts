@@ -1,5 +1,11 @@
-const getNameFile = (str: string) => {
-  return str.split('.')[0];
-};
+export class Utils {
 
-export { getNameFile };
+  
+  public uuidv4Generator() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const numberRandom = (Math.random() * 16) | 0;
+      const value = c == 'x' ? numberRandom : (numberRandom & 0x3) | 0x8;
+      return value.toString(16);
+    });
+  }
+}
