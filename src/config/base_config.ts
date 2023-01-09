@@ -43,8 +43,6 @@ export abstract class configServer {
       synchronize: true,
       logging: false,
       namingStrategy: new SnakeNamingStrategy(),
-
-
     };
   }
 }

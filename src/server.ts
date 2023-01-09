@@ -1,10 +1,12 @@
+
+
+import { UserRouter } from '@user/user.router';
 import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 import { DataSource } from 'typeorm';
 
-import { configServer } from './config/index';
-import { UserRouter } from './routes/user.router';
+import { configServer } from './config/base_config';
 
 class ServerBosstrap extends configServer {
   public app: express.Application = express();

@@ -1,5 +1,5 @@
-import { UserController } from '../controller/user.controller';
-import { baseRouter } from './base.router';
+import { baseRouter } from '@shared/base.router';
+import { UserController } from '@user/controller/user.controller';
 
 export class UserRouter extends baseRouter<UserController> {
   constructor() {
