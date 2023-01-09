@@ -21,8 +21,12 @@
       "@shared/*": ["shared/*"],
       "@client/*": ["client/*"],
       "@server/*": ["server/*"],
+      "@config/*": ["config/*"],
       "@user/*": ["user/*"],
-      "@config/*": ["config/*"]
+      "@customer/*": ["customer/*"],
+      "@product/*": ["product/*"],
+      "@purchase/*": ["purchase/*"],
+      "@category/*": ["category/*"],
     }
   },
   "include": ["src/**/*"]
