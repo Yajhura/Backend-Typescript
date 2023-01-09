@@ -1,7 +1,7 @@
 import { BaseEntity } from '@config/base.entity';
 import { ProductoEntity } from '@product/entities/product.entity';
 import { PurchaseEntity } from '@purchase/entities/purchase.entity';
-import { Column, Entity, JoinColumn, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'purchases_products' })
 export class PurchaseProductsEntity extends BaseEntity {
@@ -11,11 +11,15 @@ export class PurchaseProductsEntity extends BaseEntity {
   @Column()
   quantityProduct!: number;
 
-  @ManyToMany(() => PurchaseEntity, (purchase) => purchase.purchaseProduct)
-  @JoinColumn({ name: 'purchase_id' })
+  @ManyToOne(() => PurchaseEntity, (purchase) => purchase.purchaseProduct)
+  @JoinColumn({
+    name: 'purchase_id',
+  })
   purchase!: PurchaseEntity[];
 
-  @ManyToMany(() => ProductoEntity, (product) => product.purchaseProduct)
-  @JoinColumn({ name: 'product_id' })
+  @ManyToOne(() => ProductoEntity, (product) => product.purchaseProduct)
+  @JoinColumn({
+    name: 'product_id',
+  })
   product!: ProductoEntity[];
 }
