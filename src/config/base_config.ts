@@ -1,8 +1,10 @@
 import * as dotenv from 'dotenv';
-import { DataSourceOptions } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { UtilsExpressConfig } from 'utils/utils-expres-config';
 
 export abstract class configServer {
+  public configExpresUtils: UtilsExpressConfig = new UtilsExpressConfig();
   constructor() {
     const nodeNameEnv = this.createPathEnv(this.nodeEnv);
     dotenv.config({
@@ -44,5 +46,9 @@ export abstract class configServer {
       logging: false,
       namingStrategy: new SnakeNamingStrategy(),
     };
+  }
+
+  async dbConnect(): Promise<DataSource> {
+    return await new DataSource(this.typeOrmConfig).initialize();
   }
 }
