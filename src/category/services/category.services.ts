@@ -9,19 +9,19 @@ export class CategoryServices extends BaseServices<CategoryEntity> {
   }
 
   async findAll(): Promise<CategoryEntity[]> {
-    return await (await this.execRepository).find();
+    return (await this.execRepository).find();
   }
 
   async findCategoryById(id: string): Promise<CategoryEntity | null> {
-    return await (await this.execRepository).findOneBy({ id });
+    return (await this.execRepository).findOneBy({ id });
   }
 
-  async createCategory(body: CategoryEntity): Promise<CategoryEntity> {
-    return (await this.execRepository).create(body);
+  async createCategory(body: CategoryDTO): Promise<CategoryEntity> {
+    return (await this.execRepository).save(body);
   }
 
   async updateCategory(id: string, body: CategoryDTO): Promise<UpdateResult> {
-    return (await this.execRepository).update(id, body);
+    return (await this.execRepository).update({id}, body);
   }
 
   async deleteCategory(id: string): Promise<DeleteResult> {

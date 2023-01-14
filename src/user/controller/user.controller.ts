@@ -15,70 +15,51 @@ export class UserController {
     private readonly httpResponse: HttpResponse = new HttpResponse(),
   ) {}
 
-  async getUsers(req: Request, res: Response<Respuesta>, next: NextFunction) {
-    try {
-      const usuarios = await this.userServices.findAll();
+  async getUsers(req: Request, res: Response<Respuesta>, next: any) {
+    const usuarios = await this.userServices.findAll();
 
-      if (usuarios.length === 0) {
-        return this.httpResponse.NOT_FOUND(res, 'No existe datos');
-      }
-
-      return this.httpResponse.OK(res, usuarios);
-    } catch (error) {
-      next(error);
+    if (usuarios.length === 0) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe datos');
     }
+
+    return this.httpResponse.OK(res, usuarios);
   }
 
-  async getUserById(req: Request, res: Response, next: NextFunction) {
+  async getUserById(req: Request, res: Response) {
     const { id } = req.params;
-    try {
-      const data = await this.userServices.findUserById(id);
+    const data = await this.userServices.findUserById(id);
 
-      if (!data) {
-        return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
-      }
-
-      return this.httpResponse.OK(res, data);
-    } catch (error) {
-      next(error);
+    if (!data) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
     }
+
+    return this.httpResponse.OK(res, data);
   }
 
   async createUser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const body = req.body;
-
-      const data = await this.userServices.createUser(body);
-      return res.status(201).json({ data });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async deleteUser(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    try {
-      const data = await this.userServices.deleteUser(id);
-      if (!data.affected) {
-        return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
-      }
-      return this.httpResponse.OK(res, data, 'Usuario eliminado');
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async updateUser(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
     const body = req.body;
-    try {
-      const data = await this.userServices.updateUser(id, body);
-      if (!data.affected) {
-        return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
-      }
-      return this.httpResponse.OK(res, data, 'Usuario actualizado');
-    } catch (error) {
-      next(error);
+
+    const data = await this.userServices.createUser(body);
+    return res.status(201).json({ data });
+  }
+
+  async deleteUser(req: Request, res: Response) {
+    const { id } = req.params;
+    const data = await this.userServices.deleteUser(id);
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
     }
+    return this.httpResponse.OK(res, data, 'Usuario eliminado');
+  }
+
+  async updateUser(req: Request, res: Response) {
+    const { id } = req.params;
+    const { body } = req;
+
+    const data = await this.userServices.updateUser(id, body);
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
+    }
+    return this.httpResponse.OK(res, data, 'Usuario actualizado');
   }
 }

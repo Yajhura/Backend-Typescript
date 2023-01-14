@@ -1,17 +1,20 @@
 import { baseRouter } from '@shared/base.router';
+import { catchAsync } from 'utils/utils-expres-config';
 
 import { CustomerController } from './controller/customer.controller';
 
-export class CategoryRouter extends baseRouter<CustomerController> {
+export class CustomerRouter extends baseRouter<CustomerController> {
   constructor() {
     super(CustomerController);
   }
 
   routes(): void {
-    this.router.get('/customer', (req, res, next) => this.controller.getCustomers(req, res, next));
-    this.router.get('/customer/:id', (req, res, next) => this.controller.getCustomerById(req, res, next));
-    this.router.post('/customer', (req, res, next) => this.controller.createCustomer(req, res, next));
-    this.router.put('/customer/:id', (req, res, next) => this.controller.updateCustomer(req, res, next));
-    this.router.delete('/customer/:id', (req, res, next) => this.controller.deleteCustomer(req, res, next));
+    this.router.get('/category',catchAsync((req: any, res: any) => this.controller.getCustomers(req, res)),);
+    this.router.get('/category/:id',catchAsync((req: any, res: any) => this.controller.getCustomerById(req, res)),);
+    this.router.post('/category',catchAsync((req: any, res: any) => this.controller.createCustomer(req, res)),);
+    this.router.put('/category/:id',catchAsync((req: any, res: any) => this.controller.updateCustomer(req, res)),);
+    this.router.delete('/category/:id',catchAsync((req: any, res: any) => this.controller.deleteCustomer(req, res)),);
+    
   }
 }
+

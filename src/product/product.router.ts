@@ -1,4 +1,5 @@
 import { baseRouter } from '@shared/base.router';
+import { catchAsync } from 'utils/utils-expres-config';
 
 import { ProductController } from './controller/product.controller';
 
@@ -8,10 +9,25 @@ export class productRouter extends baseRouter<ProductController> {
   }
 
   routes(): void {
-    this.router.get('/products', (req, res, next) => this.controller.getProducts(req, res, next));
-    this.router.get('/products/:id', (req, res, next) => this.controller.getProductById(req, res, next));
-    this.router.post('/products', (req, res, next) => this.controller.createProduct(req, res, next));
-    this.router.put('/products/:id', (req, res, next) => this.controller.updateProduct(req, res, next));
-    this.router.delete('/products/:id', (req, res, next) => this.controller.deleteProduct(req, res, next));
+    this.router.get(
+      '/products',
+      catchAsync((req: any, res: any) => this.controller.getProducts(req, res)),
+    );
+    this.router.get(
+      '/products/:id',
+      catchAsync((req: any, res: any) => this.controller.getProductById(req, res)),
+    );
+    this.router.post(
+      '/products',
+      catchAsync((req: any, res: any) => this.controller.createProduct(req, res)),
+    );
+    this.router.put(
+      '/products/:id',
+      catchAsync((req: any, res: any) => this.controller.updateProduct(req, res)),
+    );
+    this.router.delete(
+      '/products/:id',
+      catchAsync((req: any, res: any) => this.controller.deleteProduct(req, res)),
+    );
   }
 }

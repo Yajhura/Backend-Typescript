@@ -1,4 +1,5 @@
 import { baseRouter } from '@shared/base.router';
+import { catchAsync } from 'utils/utils-expres-config';
 
 import { CategoryController } from './controller/category.controller';
 
@@ -8,10 +9,25 @@ export class CategoryRouter extends baseRouter<CategoryController> {
   }
 
   routes(): void {
-    this.router.get('/category', (req, res, next) => this.controller.getCategory(req, res, next));
-    this.router.get('/category/:id', (req, res, next) => this.controller.getCategoryById(req, res, next));
-    this.router.post('/category', (req, res, next) => this.controller.createCategory(req, res, next));
-    this.router.put('/category/:id', (req, res, next) => this.controller.updateCategory(req, res, next));
-    this.router.delete('/category/:id', (req, res, next) => this.controller.deleteCategory(req, res, next));
+    this.router.get(
+      '/category',
+      catchAsync((req: any, res: any) => this.controller.getCategory(req, res)),
+    );
+    this.router.get(
+      '/category/:id',
+      catchAsync((req: any, res: any) => this.controller.getCategoryById(req, res)),
+    );
+    this.router.post(
+      '/category',
+      catchAsync((req: any, res: any) => this.controller.createCategory(req, res)),
+    );
+    this.router.put(
+      '/category/:id',
+      catchAsync((req: any, res: any) => this.controller.updateCategory(req, res)),
+    );
+    this.router.delete(
+      '/category/:id',
+      catchAsync((req: any, res: any) => this.controller.deleteCategory(req, res)),
+    );
   }
 }
