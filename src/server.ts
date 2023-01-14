@@ -7,6 +7,7 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import { errorLogs } from 'utils/utils-expres-config';
 
 import { configServer } from './config/base_config';
 import { PurchaseProductRouter } from './purchase/purchase-product.router';
@@ -25,6 +26,7 @@ class ServerBosstrap extends configServer {
       .then(() => this.configExpresUtils.Logger().info('Database connected'))
       .catch((err) => this.configExpresUtils.Logger().error(err));
     this.app.use('/api', this.routes());
+    this.app.use(errorLogs)
     this.app.use(globalErrorHandler);
     this.app.use('*', this.configExpresUtils.NotFoundHandler);
     this.processDebug();
