@@ -11,7 +11,7 @@ export class PurchaseEntity extends BaseEntity {
   @Column()
   paymentMethod!: string;
 
-  @ManyToOne(() => CustomerEntity, (customer) => customer.purchases)
+  @ManyToOne(() => CustomerEntity, (customer) => customer.purchases, { nullable: false })
   @JoinColumn({ name: 'customer_id' })
   customer!: CustomerEntity;
 

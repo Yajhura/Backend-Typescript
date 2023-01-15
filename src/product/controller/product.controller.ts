@@ -44,7 +44,9 @@ export class ProductController {
     const { body } = req;
 
     const data = await this.productServices.updateProduct(id, body);
-
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
+    }
     return this.httpResponse.OK(res, data, 'Producto actualizado');
   }
 
@@ -52,6 +54,10 @@ export class ProductController {
     const { id } = req.params;
 
     const data = await this.productServices.deleteProduct(id);
+
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe producto');
+    }
 
     return this.httpResponse.OK(res, data, 'Producto eliminado');
   }

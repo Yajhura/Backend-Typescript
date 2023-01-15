@@ -1,11 +1,12 @@
 import { BaseServices } from '@config/base.services';
-import { ProductDTO } from '@product/dto/product.dto';
 import { PurchaseProductDTO } from '@purchase/dto/purchase-product.dto';
 import { PurchaseProductsEntity } from '@purchase/entities/purchases-products.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
+import { ProductServices } from '../../product/services/product.services';
+
 export class PurchaseProductServices extends BaseServices<PurchaseProductsEntity> {
-  constructor() {
+  constructor(private readonly productServices: ProductServices = new ProductServices()) {
     super(PurchaseProductsEntity);
   }
 
@@ -17,10 +18,15 @@ export class PurchaseProductServices extends BaseServices<PurchaseProductsEntity
     return (await this.execRepository).findOneBy({ id: id });
   }
   async createPurchaseProduct(body: PurchaseProductDTO): Promise<PurchaseProductsEntity> {
-    return (await this.execRepository).save(body);
+    const newPP = (await this.execRepository).create(body)
+
+    const product = await this.productServices.findProductById(newPP.product.id);
+
+    newPP.totalPrice = product!.price * newPP.quantityProduct;
+    return (await this.execRepository).save(newPP);
   }
 
-  async updatePurchaseProduct(id: string, body: ProductDTO): Promise<UpdateResult> {
+  async updatePurchaseProduct(id: string, body: PurchaseProductDTO): Promise<UpdateResult> {
     return (await this.execRepository).update(id, body);
   }
 

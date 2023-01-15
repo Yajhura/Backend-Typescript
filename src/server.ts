@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { CategoryRouter } from '@category/category.router';
 import { CustomerRouter } from '@customer/customer.router';
 import { productRouter } from '@product/product.router';
@@ -7,6 +9,7 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import { DataSource } from 'typeorm';
 import { errorLogs } from 'utils/utils-expres-config';
 
 import { configServer } from './config/base_config';
@@ -22,11 +25,9 @@ class ServerBosstrap extends configServer {
     this.configExpress();
     this.listen();
     this.routes();
-    this.dbConnect()
-      .then(() => this.configExpresUtils.Logger().info('Database connected'))
-      .catch((err) => this.configExpresUtils.Logger().error(err));
+    this.dbConnect();
     this.app.use('/api', this.routes());
-    this.app.use(errorLogs)
+    this.app.use(errorLogs);
     this.app.use(globalErrorHandler);
     this.app.use('*', this.configExpresUtils.NotFoundHandler);
     this.processDebug();
@@ -60,7 +61,15 @@ class ServerBosstrap extends configServer {
       return;
     });
   }
-
+  async dbConnect(): Promise<DataSource | void> {
+    return this.initConnect
+      .then(() => {
+        return this.configExpresUtils.Logger().info('Database connected');
+      })
+      .catch((err) => {
+        this.configExpresUtils.Logger().error(err);
+      });
+  }
   processDebug() {
     process
       .on('uncaughtException', (err) => {

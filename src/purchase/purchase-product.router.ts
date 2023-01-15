@@ -10,23 +10,23 @@ export class PurchaseProductRouter extends baseRouter<PurchaseProductController>
 
   routes(): void {
     this.router.get(
-      '/purchaseProducts',
+      '/purchase-products',
       catchAsync((req: any, res: any) => this.controller.getPurchasesProducts(req, res)),
     );
     this.router.get(
-      '/purchaseProducts/:id',
+      '/purchase-products/:id',
       catchAsync((req: any, res: any) => this.controller.getPurchaseProductById(req, res)),
     );
     this.router.post(
-      '/purchaseProducts',
+      '/purchase-products',
       catchAsync((req: any, res: any) => this.controller.createPurchaseProduct(req, res)),
     );
     this.router.put(
-      '/purchaseProducts/:id',
+      '/purchase-products/:id',
       catchAsync((req: any, res: any) => this.controller.updatePurchaseProduct(req, res)),
     );
     this.router.delete(
-      '/purchaseProducts/:id',
+      '/purchase-products/:id',
       catchAsync((req: any, res: any) => this.controller.deletePurchaseProduct(req, res)),
     );
   }

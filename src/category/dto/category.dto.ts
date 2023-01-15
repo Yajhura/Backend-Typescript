@@ -1,7 +1,10 @@
 import { baseDTO } from '@config/base.dto';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CategoryDTO extends baseDTO {
   @IsNotEmpty()
-  category_name!: string;
+  categoryName!: string;
+
+  @IsOptional()
+  colorBadge?: string;
 }

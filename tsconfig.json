@@ -4,17 +4,18 @@
     "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "NodeNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES6",
     "strict": true,
     "moduleResolution": "node",
     "sourceMap": true,
+    "rootDir": "./src",
     "outDir": "dist",
     "resolveJsonModule": true,
-    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
 
     "baseUrl": "./src",
     "paths": {
@@ -26,7 +27,7 @@
       "@customer/*": ["customer/*"],
       "@product/*": ["product/*"],
       "@purchase/*": ["purchase/*"],
-      "@category/*": ["category/*"],
+      "@category/*": ["category/*"]
     }
   },
   "include": ["src/**/*"]

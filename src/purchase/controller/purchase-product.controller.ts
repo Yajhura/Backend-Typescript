@@ -1,6 +1,6 @@
 import { PurchaseProductServices } from '@purchase/services/purchase-product.services';
 import { HttpResponse } from '@shared/response/http.response';
-import {  Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 export class PurchaseProductController {
   constructor(
@@ -24,7 +24,7 @@ export class PurchaseProductController {
     const data = await this.pruchaseServices.findPurchaseProductById(id);
 
     if (!data) {
-      return this.httpResponse.NOT_FOUND(res, 'No existe Purchase');
+      return this.httpResponse.NOT_FOUND(res, 'No existe Purchase Product');
     }
 
     return this.httpResponse.OK(res, data);
@@ -35,7 +35,7 @@ export class PurchaseProductController {
 
     const data = await this.pruchaseServices.createPurchaseProduct(body);
 
-    return this.httpResponse.CREATED(res, data, 'Purchase creado');
+    return this.httpResponse.CREATED(res, data, 'Purchase Product creado');
   }
 
   async updatePurchaseProduct(req: Request, res: Response) {
@@ -43,15 +43,19 @@ export class PurchaseProductController {
     const { body } = req;
 
     const data = await this.pruchaseServices.updatePurchaseProduct(id, body);
-
-    return this.httpResponse.OK(res, data, 'Purchase actualizado');
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe Purchase Product');
+    }
+    return this.httpResponse.OK(res, data, 'Purchase Product actualizado');
   }
 
   async deletePurchaseProduct(req: Request, res: Response) {
     const { id } = req.params;
 
     const data = await this.pruchaseServices.deletePurchaseProduct(id);
-
-    return this.httpResponse.OK(res, data, 'purchase eliminado');
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe Purchase Product');
+    }
+    return this.httpResponse.OK(res, data, 'purchase product eliminado');
   }
 }

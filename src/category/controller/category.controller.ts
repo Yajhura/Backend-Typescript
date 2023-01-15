@@ -44,7 +44,7 @@ export class CategoryController {
     const { body } = req;
 
     const data = await this.categoryServices.updateCategory(id, body);
-    if (!data) {
+    if (!data.affected) {
       return this.httpResponse.NOT_FOUND(res, 'No existe categoria');
     }
     return this.httpResponse.OK(res, data, 'Categoria actualizado');
@@ -55,7 +55,7 @@ export class CategoryController {
 
     const data = await this.categoryServices.deleteCategory(id);
 
-    if (!data) {
+    if (!data.affected) {
       return this.httpResponse.NOT_FOUND(res, 'No existe categoria');
     }
     return this.httpResponse.OK(res, data, 'Categoria eliminado');

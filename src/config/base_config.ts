@@ -1,7 +1,8 @@
 import * as dotenv from 'dotenv';
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { DataSource } from 'typeorm';
 import { UtilsExpressConfig } from 'utils/utils-expres-config';
+
+import { AppDataSource } from './data-sources';
 
 export abstract class configServer {
   public configExpresUtils: UtilsExpressConfig = new UtilsExpressConfig();
@@ -32,23 +33,8 @@ export abstract class configServer {
     }
     return '.' + arrEnv.join('.');
   }
-  public get typeOrmConfig(): DataSourceOptions {
-    return {
-      type: 'mysql',
-      port: this.getNumberEnviroment('DB_PORT'),
-      host: this.getEnviroment('DB_HOST'),
-      username: this.getEnviroment('DB_USER'),
-      password: this.getEnviroment('DB_PASSWORD'),
-      database: this.getEnviroment('DB_DATABASE'),
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      migrations: [__dirname + '/../../migrations/*{.ts,.js}'],
-      synchronize: true,
-      logging: false,
-      namingStrategy: new SnakeNamingStrategy(),
-    };
-  }
 
-  async dbConnect(): Promise<DataSource> {
-    return await new DataSource(this.typeOrmConfig).initialize();
+  get initConnect(): Promise<DataSource> {
+    return AppDataSource.initialize();
   }
 }

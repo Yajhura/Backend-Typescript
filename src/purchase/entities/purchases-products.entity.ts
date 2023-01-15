@@ -5,21 +5,24 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'purchases_products' })
 export class PurchaseProductsEntity extends BaseEntity {
-  @Column()
-  totalPrice!: number;
+
 
   @Column()
   quantityProduct!: number;
+
+  @Column()
+  totalPrice!: number;
+
 
   @ManyToOne(() => PurchaseEntity, (purchase) => purchase.purchaseProduct)
   @JoinColumn({
     name: 'purchase_id',
   })
-  purchase!: PurchaseEntity[];
+  purchase!: PurchaseEntity;
 
   @ManyToOne(() => ProductoEntity, (product) => product.purchaseProduct)
   @JoinColumn({
     name: 'product_id',
   })
-  product!: ProductoEntity[];
+  product!: ProductoEntity;
 }

@@ -24,6 +24,6 @@ export class ProductServices extends BaseServices<ProductoEntity> {
   }
 
   async deleteProduct(id: string): Promise<DeleteResult> {
-    return (await this.execRepository).delete(id);
+    return (await this.execRepository).delete({ id });
   }
 }

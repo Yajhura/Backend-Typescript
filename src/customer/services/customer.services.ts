@@ -1,4 +1,3 @@
-import { CategoryEntity } from '@category/entities/categories.entity';
 import { BaseServices } from '@config/base.services';
 import { CustomerDTO } from '@customer/dto/customer.dto';
 import { CustomerEntity } from '@customer/entities/customer.entity';
@@ -6,7 +5,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 
 export class CustomerServices extends BaseServices<CustomerEntity> {
   constructor() {
-    super(CategoryEntity);
+    super(CustomerEntity);
   }
 
   async findAll(): Promise<CustomerEntity[]> {
@@ -17,8 +16,8 @@ export class CustomerServices extends BaseServices<CustomerEntity> {
     return await (await this.execRepository).findOneBy({ id });
   }
 
-  async createCustomer(body: CustomerEntity): Promise<CustomerEntity> {
-    return (await this.execRepository).create(body);
+  async createCustomer(body: CustomerDTO): Promise<CustomerEntity> {
+    return (await this.execRepository).save(body);
   }
 
   async updateCustomer(id: string, body: CustomerDTO): Promise<UpdateResult> {

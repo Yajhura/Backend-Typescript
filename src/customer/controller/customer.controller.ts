@@ -44,7 +44,7 @@ export class CustomerController {
     const { body } = req;
 
     const data = await this.customerServices.updateCustomer(id, body);
-    if (!data) {
+    if (!data.affected) {
       return this.httpResponse.NOT_FOUND(res, 'No existe Customer');
     }
     return this.httpResponse.OK(res, data, 'Customer actualizado');
@@ -55,7 +55,7 @@ export class CustomerController {
 
     const data = await this.customerServices.deleteCustomer(id);
 
-    if (!data) {
+    if (!data.affected) {
       return this.httpResponse.NOT_FOUND(res, 'No existe Customer');
     }
     return this.httpResponse.OK(res, data, 'Customer eliminado');

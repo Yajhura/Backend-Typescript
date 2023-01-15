@@ -43,7 +43,9 @@ export class PurchaseController {
     const { body } = req;
 
     const data = await this.pruchaseServices.updatePurchase(id, body);
-
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe Purchase');
+    }
     return this.httpResponse.OK(res, data, 'Purchase actualizado');
   }
 
@@ -51,7 +53,9 @@ export class PurchaseController {
     const { id } = req.params;
 
     const data = await this.pruchaseServices.deletePurchase(id);
-
+    if (!data.affected) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe Purchase');
+    }
     return this.httpResponse.OK(res, data, 'purchase eliminado');
   }
 }

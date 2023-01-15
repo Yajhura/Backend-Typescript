@@ -12,7 +12,7 @@ export class BaseServices<T extends BaseEntity> extends configServer {
   //eslint-disable-next-line
   //@ts-ignore
   async initRepository<T>(e: EntityTarget<T>): Promise<Repository<T>> {
-    const getConn = await this.dbConnect();
+    const getConn = await this.initConnect;
     //eslint-disable-next-line
     //@ts-ignore
     return getConn.getRepository(e);

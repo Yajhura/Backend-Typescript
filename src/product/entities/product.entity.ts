@@ -6,7 +6,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 @Entity({ name: 'product' })
 export class ProductoEntity extends BaseEntity {
   @Column()
-  product_name!: string;
+  productName!: string;
 
   @Column()
   description!: string;
@@ -14,7 +14,7 @@ export class ProductoEntity extends BaseEntity {
   @Column()
   price!: number;
 
-  @ManyToOne(() => CategoryEntity, (category) => category.products)
+  @ManyToOne(() => CategoryEntity, (category) => category.products, { nullable: false })
   @JoinColumn({ name: 'category_id' })
   category!: CategoryEntity;
 

@@ -1,5 +1,4 @@
 import { BaseServices } from '@config/base.services';
-import { ProductDTO } from '@product/dto/product.dto';
 import { PurchaseDTO } from '@purchase/dto/purchase.dto';
 import { PurchaseEntity } from '@purchase/entities/purchase.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
@@ -20,7 +19,7 @@ export class PurchaseServices extends BaseServices<PurchaseEntity> {
     return (await this.execRepository).save(body);
   }
 
-  async updatePurchase(id: string, body: ProductDTO): Promise<UpdateResult> {
+  async updatePurchase(id: string, body: PurchaseDTO): Promise<UpdateResult> {
     return (await this.execRepository).update(id, body);
   }
 
