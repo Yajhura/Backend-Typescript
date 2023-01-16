@@ -1,5 +1,5 @@
 import { HttpResponse } from '@shared/response/http.response';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { UserEntity } from '../entities/user.entity';
 import { UserServices } from '../services/user.services';
@@ -39,6 +39,17 @@ export class UserController {
   async getUserWithRelation(req: Request, res: Response) {
     const { id } = req.params;
     const data = await this.userServices.findUserWithRelation(id);
+
+    if (!data) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
+    }
+
+    return this.httpResponse.OK(res, data);
+  }
+
+  async getUserWithRelationByUsername(req: Request, res: Response) {
+    const { username } = req.params;
+    const data = await this.userServices.findUserWithRelationByUsername(username);
 
     if (!data) {
       return this.httpResponse.NOT_FOUND(res, 'No existe usuario');

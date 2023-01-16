@@ -1,5 +1,5 @@
 import { baseDTO } from '@config/base.dto';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 import { ProductoEntity } from '../../product/entities/product.entity';
 import { PurchaseEntity } from '../entities/purchase.entity';

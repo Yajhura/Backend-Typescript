@@ -5,11 +5,11 @@ export class baseRouter<T, U> {
   public controller: T;
   public middlewares: U;
 
-  constructor(TController: { new (): T }, UMiddlewares: { new (): U }) {
+  constructor(TController: { new (): T }, UMiddleware: { new (): U }) {
     this.router = Router();
     this.controller = new TController();
+    this.middlewares = new UMiddleware();
     this.routes();
-    this.middlewares = new UMiddlewares();
   }
 
   routes(): void {

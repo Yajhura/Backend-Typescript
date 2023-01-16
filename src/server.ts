@@ -5,6 +5,9 @@ import { CustomerRouter } from '@customer/customer.router';
 import { productRouter } from '@product/product.router';
 import { PurchaseRouter } from '@purchase/purchase.router';
 import { UserRouter } from '@user/user.router';
+import { AuthRouter } from 'auth/auth.router';
+import { JWTStrategy } from 'auth/strategies/jwt.strategy';
+import { LoginStrategy } from 'auth/strategies/login.strategy';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
@@ -22,15 +25,17 @@ class ServerBosstrap extends configServer {
 
   constructor() {
     super();
+
     this.configExpress();
-    this.listen();
-    this.routes();
+    this.passportUse();
     this.dbConnect();
+    this.routes();
     this.app.use('/api', this.routes());
     this.app.use(errorLogs);
     this.app.use(globalErrorHandler);
     this.app.use('*', this.configExpresUtils.NotFoundHandler);
     this.processDebug();
+    this.listen();
   }
 
   private configExpress() {
@@ -43,6 +48,10 @@ class ServerBosstrap extends configServer {
     return;
   }
 
+  passportUse() {
+    return [new LoginStrategy().use, new JWTStrategy().use];
+  }
+
   private routes(): Array<express.Router> {
     return [
       new UserRouter().router,
@@ -51,16 +60,10 @@ class ServerBosstrap extends configServer {
       new productRouter().router,
       new PurchaseRouter().router,
       new PurchaseProductRouter().router,
+      new AuthRouter().router,
     ];
   }
 
-  public listen() {
-    return this.app.listen(this.port, () => {
-      this.configExpresUtils.Logger().info(`Server is running on port ${this.port}`);
-      this.configExpresUtils.Logger().info(`http://localhost:${this.port}`);
-      return;
-    });
-  }
   async dbConnect(): Promise<DataSource | void> {
     return this.initConnect
       .then(() => {
@@ -69,6 +72,13 @@ class ServerBosstrap extends configServer {
       .catch((err) => {
         this.configExpresUtils.Logger().error(err);
       });
+  }
+  public listen() {
+    return this.app.listen(this.port, () => {
+      this.configExpresUtils.Logger().info(`Server is running on port ${this.port}`);
+      this.configExpresUtils.Logger().info(`http://localhost:${this.port}`);
+      return;
+    });
   }
   processDebug() {
     process

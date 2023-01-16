@@ -1,11 +1,13 @@
+import { SharedMiddleware } from '@shared/middleware/shared.middleware';
 import { validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';
 
-import { HttpResponse } from '../../shared/response/http.response';
 import { UserDTO } from '../dto/user.dto';
 
-export class UserMidleware {
-  constructor(private readonly httpResponse: HttpResponse = new HttpResponse()) {}
+export class UserMidleware extends SharedMiddleware {
+  constructor() {
+    super();
+  }
 
   userValidator = async (req: Request, res: Response, next: NextFunction) => {
     const body = req.body;

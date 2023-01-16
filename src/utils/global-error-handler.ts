@@ -8,7 +8,7 @@ export type IError = {
   message?: string;
   errors?: any;
 };
-
+//eslint-disable-next-line
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const httpResponse = new HttpResponse();
 

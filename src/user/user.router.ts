@@ -24,6 +24,10 @@ export class UserRouter extends baseRouter<UserController, UserMidleware> {
       catchAsync((req: any, res: any) => this.controller.getUserWithRelation(req, res)),
     );
 
+    this.router.get(
+      '/users-username/:username',
+      catchAsync((req: any, res: any) => this.controller.getUserWithRelationByUsername(req, res)),
+    );
     this.router.post(
       '/users',
       (req: any, res: any, next: any) => this.middlewares.userValidator(req, res, next),
@@ -37,6 +41,8 @@ export class UserRouter extends baseRouter<UserController, UserMidleware> {
 
     this.router.delete(
       '/users/:id',
+      this.middlewares.passAuth('jwt'),
+      (req: any, res: any, next: any) => this.middlewares.checkAdminRole(req, res, next),
       catchAsync((req: any, res: any) => this.controller.deleteUser(req, res)),
     );
   }
