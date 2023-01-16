@@ -9,8 +9,15 @@ export type IError = {
   errors?: any;
 };
 
-export const globalErrorHandler = (err: IError, req: Request, res: Response, next: NextFunction) => {
+export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const httpResponse = new HttpResponse();
+
+  if (err instanceof SyntaxError) {
+    return httpResponse.Bad_Request(
+      res,
+      'Error en los datos enviados, verifique los datos esten correctos o el json este bien formado',
+    );
+  }
 
   if (err instanceof EntityPropertyNotFoundError) {
     return httpResponse.NOT_FOUND(res, err.message || 'No existe propiedad en la entidad');
@@ -23,10 +30,6 @@ export const globalErrorHandler = (err: IError, req: Request, res: Response, nex
     } as any;
 
     return httpResponse.Validation_Error(res, errorQuery);
-  }
-
-  if (err instanceof Error) {
-    console.log(err.stack);
   }
 
   httpResponse.INTERNAL_SERVER_ERROR(res);

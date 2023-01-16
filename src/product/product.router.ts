@@ -2,15 +2,17 @@ import { baseRouter } from '@shared/base.router';
 import { catchAsync } from 'utils/utils-expres-config';
 
 import { ProductController } from './controller/product.controller';
+import { ProductMiddleware } from './middleware/product.middleware';
 
-export class productRouter extends baseRouter<ProductController> {
+export class productRouter extends baseRouter<ProductController, ProductMiddleware> {
   constructor() {
-    super(ProductController);
+    super(ProductController, ProductMiddleware);
   }
 
   routes(): void {
     this.router.get(
       '/products',
+
       catchAsync((req: any, res: any) => this.controller.getProducts(req, res)),
     );
     this.router.get(
@@ -19,10 +21,12 @@ export class productRouter extends baseRouter<ProductController> {
     );
     this.router.post(
       '/products',
+      (req: any, res: any, next: any) => this.middlewares.ProductValidator(req, res, next),
       catchAsync((req: any, res: any) => this.controller.createProduct(req, res)),
     );
     this.router.put(
       '/products/:id',
+      (req: any, res: any, next: any) => this.middlewares.ProductValidator(req, res, next),
       catchAsync((req: any, res: any) => this.controller.updateProduct(req, res)),
     );
     this.router.delete(

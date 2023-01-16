@@ -15,6 +15,15 @@ export class ProductServices extends BaseServices<ProductoEntity> {
   async findProductById(id: string): Promise<ProductoEntity | null> {
     return (await this.execRepository).findOneBy({ id: id });
   }
+
+  async findProductWithRelation(id: string): Promise<ProductoEntity | null> {
+    return (await this.execRepository)
+      .createQueryBuilder('product')                     
+      .leftJoinAndSelect('product.category', 'category')
+      .where({ id })
+      .getOne();
+  }
+
   async createProduct(body: ProductDTO): Promise<ProductoEntity> {
     return (await this.execRepository).save(body);
   }

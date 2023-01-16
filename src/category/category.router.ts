@@ -2,10 +2,11 @@ import { baseRouter } from '@shared/base.router';
 import { catchAsync } from 'utils/utils-expres-config';
 
 import { CategoryController } from './controller/category.controller';
+import { CategoryMiddleware } from './middleware/category.middleware';
 
-export class CategoryRouter extends baseRouter<CategoryController> {
+export class CategoryRouter extends baseRouter<CategoryController, CategoryMiddleware> {
   constructor() {
-    super(CategoryController);
+    super(CategoryController, CategoryMiddleware);
   }
 
   routes(): void {
@@ -19,10 +20,12 @@ export class CategoryRouter extends baseRouter<CategoryController> {
     );
     this.router.post(
       '/category',
+      (req: any, res: any, next: any) => this.middlewares.CategoryValidator(req, res, next),
       catchAsync((req: any, res: any) => this.controller.createCategory(req, res)),
     );
     this.router.put(
       '/category/:id',
+      (req: any, res: any, next: any) => this.middlewares.CategoryValidator(req, res, next),
       catchAsync((req: any, res: any) => this.controller.updateCategory(req, res)),
     );
     this.router.delete(

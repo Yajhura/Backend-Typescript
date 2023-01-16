@@ -15,7 +15,7 @@ export class UserController {
     private readonly httpResponse: HttpResponse = new HttpResponse(),
   ) {}
 
-  async getUsers(req: Request, res: Response<Respuesta>, next: any) {
+  async getUsers(req: Request, res: Response<Respuesta>) {
     const usuarios = await this.userServices.findAll();
 
     if (usuarios.length === 0) {
@@ -36,7 +36,18 @@ export class UserController {
     return this.httpResponse.OK(res, data);
   }
 
-  async createUser(req: Request, res: Response, next: NextFunction) {
+  async getUserWithRelation(req: Request, res: Response) {
+    const { id } = req.params;
+    const data = await this.userServices.findUserWithRelation(id);
+
+    if (!data) {
+      return this.httpResponse.NOT_FOUND(res, 'No existe usuario');
+    }
+
+    return this.httpResponse.OK(res, data);
+  }
+
+  async createUser(req: Request, res: Response) {
     const body = req.body;
 
     const data = await this.userServices.createUser(body);
